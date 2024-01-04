@@ -47,3 +47,6 @@ Customers are identified by a Customer Number, Name, and Contact Details. Bank s
 1. Open the unit test project in Visual Studio.
 2. Build the project.
 3. Run the tests.
+
+### UML Class Diagram
+![UML Class Diagram](Banking_App_Model_Diagram.PNG)
