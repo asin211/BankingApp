@@ -45,4 +45,5 @@ Customers are identified by a Customer Number, Name, and Contact Details. Bank s
 
 ### Running Unit Tests
 1. Open the unit test project in Visual Studio.
-2. Run the tests.
+2. Build the project.
+3. Run the tests.
