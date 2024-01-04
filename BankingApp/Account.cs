@@ -1,38 +1,49 @@
-﻿using BankingApp;
-using Microsoft.SqlServer.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-
-namespace BankingApp
+﻿namespace BankingApp
 {
     public abstract class Account
     {
-        private static int count = 1001; //Static Id for autoincrement
-        public int AccountId { get; set; }
-        public string Type { get; set; }
+        public Customer AssociatedCustomer { get; set; }
 
-        public double Balance { get; set; }
+        public double GetFailedTransactionFee()
+        {
+            double failedTransactionFee = 10;
+            if (AssociatedCustomer != null && AssociatedCustomer.Staff)
+            {
+                return failedTransactionFee * .5;
+            }
+            else
+            {
+                return failedTransactionFee;
+            }
+        }
+
+        private static int count = 1001; //Static Id for autoincrement
+        public int AccountId { get; private set; }
+        public string Type { get; protected set; }
+
+        public double Balance { get; protected set; }
+
+        public void Deposit(double amount) {
+            if(amount <= 0)
+            {
+                throw new NegativeInputException();
+            }
+            Balance += amount;
+        } 
+
+        //Abstract Method to be used by child classes
+        public abstract void Withdraw(double amount);
+
+        public abstract double CalculateInterest(); // created this abstract method in this class to have access in other classes as well
 
         public void AddInterest(double earnedInterest)
         {
             Balance += earnedInterest;
         }
 
-        public abstract double CalculateInterest(); // created this abstract method in this class to have access in other classes as well
+        public abstract double CalculateFailedTransactionFee();
 
-        public void Deposit(double amount)
-        {
-            Balance += amount;
-        }
-
-        //Abstract Method to be used by child classes
-        public abstract void Withdraw(double amount);
+        public abstract void ChargeFailedTransactionFee();
 
         public abstract string AccountInfo();
 
@@ -41,7 +52,6 @@ namespace BankingApp
         {
             AccountId = count;
             Balance = balance;
-
             count++;
         }
 
@@ -52,124 +62,133 @@ namespace BankingApp
         }
     }
 
-    // Inherotance
+    // Inheritance
     public class EverydayAccount : Account
     {
-        // Implementation for the abstract method
-        public override void Withdraw(double amount)
-        {
-            if (Balance >= amount)
-            {
-                Balance -= amount;
-                MessageBox.Show($"${amount} withdrawn successfully from Everyday Account!");
-            }else
-            {
-                MessageBox.Show("Account doesn't have sufficient balance!");
-            }
-        }
-
-        public override string AccountInfo()
-        {
-            return $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
-        }
-
-        public override double CalculateInterest() // created blank method to avoid error from parent abstract method
-        {
-            //No interest for this account for now
-            return 0;
-        }
         public EverydayAccount(double balance) : base(balance)
         {
             Type = "Everyday Account";
-            Balance = balance;
-        }
-    }
-    public class InvestmentAccount : Account
-    {
-        public double InterestRate = 0.04;
-
-        public double FeeForFailedTransaction = 10;
-
-        // Overring Methods
-        public override double CalculateInterest()
-        {
-            double interestEarned = Balance * InterestRate;
-            return interestEarned;
-        }
-
-        // Account Informations
-        public override string AccountInfo ()
-        {
-            return $"Account Id: {AccountId}, Type: {Type}, Interest Rate: {InterestRate}, Failed Transaction Fee: {FeeForFailedTransaction}, Balance: {Balance}";
         }
 
         // Implementation for the abstract method
         public override void Withdraw(double amount)
         {
-            if (Balance >= amount)
+            if (amount <= 0)
             {
-                Balance -= amount;
-                MessageBox.Show($"${amount} withdrawn successfully from Investment Account!");
-
+                throw new NegativeInputException();
             }
-            else
+            else if (amount > Balance)
             {
-                MessageBox.Show("Account doesn't have sufficient balance! Failed transaction fee charged $10!");
-                Balance -= FeeForFailedTransaction;
+                throw new InsufficientFundsException();
+            } else
+            {
+                if (Balance >= amount)
+                {
+                    Balance -= amount;
+                }
             }
         }
+
+        public override double CalculateFailedTransactionFee()
+        {
+            return 0;
+        }
+
+        // created method to avoid error from parent abstract method
+        public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
+
+
+        public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
+
+        public override double CalculateInterest() => 0; // created method to avoid error from parent abstract method
+    }
+    public class InvestmentAccount : Account
+    {
+
+        public double InterestRate = 0.04;
+
         public InvestmentAccount(double balance) : base(balance)
         {
             Type = "Investment Account";
-            Balance = balance;
         }
+
+        // Overring Methods
+        public override double CalculateInterest() => Balance * InterestRate;
+
+        // Implementation for the abstract method
+        public override void Withdraw(double amount)
+        {
+            if (amount <= 0)
+            {
+                throw new NegativeInputException();
+            }
+            else if (amount > Balance)
+            {
+                throw new InsufficientFundsException();
+            }
+            else
+            {
+                if (Balance >= amount)
+                {
+                    Balance -= amount;
+                }
+            }
+        }
+
+        public override double CalculateFailedTransactionFee()
+        {
+            return GetFailedTransactionFee(); ;
+        }
+
+        public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
+
+
+
+        // Account Info
+        public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
     }
 
     public class OmniAccount : Account
     {
         public double InterestRate = 0.04;
-        public double FeeForFailedTransaction = 10;
         public double OverDraftLimit = 100;
 
-        public OmniAccount(int balance) : base(balance)
+        public OmniAccount(double balance) : base(balance)
         {
             Type = "Omni Account";
-            Balance = balance;
         }
 
         // Implementation of abstract method
-        public override double CalculateInterest()
-        {
-            if (Balance > 1000)
-            {
-                double interestEarned = (Balance - 1000) * InterestRate;
-                return interestEarned;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        public override double CalculateInterest() => Balance > 1000 ? (Balance - 1000) * InterestRate : 0;
 
         // Implementation for the abstract method
         public override void Withdraw(double amount)
         {
-            if ((Balance + OverDraftLimit) >= amount)
+            if (amount <= 0)
             {
-                Balance -= amount;
-                MessageBox.Show($"${amount} withdrawn successfully from Omni Account!");
-
-
+                throw new NegativeInputException();
+            }
+            else if (amount > (Balance + OverDraftLimit))
+            {
+                throw new InsufficientFundsException();
             }
             else
             {
-                MessageBox.Show("Account doesn't have sufficient balance including overdraft limit of $100! Failed transaction fee charged $10!");
-                Balance -= FeeForFailedTransaction;
+                if ((Balance + OverDraftLimit) >= amount)
+                {
+                    Balance -= amount;
+                }
             }
         }
-        public override string AccountInfo()
+
+        public override double CalculateFailedTransactionFee()
         {
-            return $"Account Id: {AccountId}, Type: {Type}, Interest Rate: {InterestRate} (No interest upto $1000), Overdraft Limit: {OverDraftLimit}, Failed Transaction Fee: {FeeForFailedTransaction}, Balance: {Balance}";
+            return GetFailedTransactionFee();
         }
+
+        public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
+
+
+        public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
     }
 }
