@@ -11,7 +11,7 @@ _ReSharper.*
 *.opensdf
 
 # NuGet
-/packages/
+packages/
 *.nupkg
 *.pdb
 *.dll
