@@ -51,26 +51,51 @@
     <Compile Include="Account.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Customer.cs" />
-    <Compile Include="CustomerForm.cs">
+    <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomerForm.Designer.cs">
-      <DependentUpon>CustomerForm.cs</DependentUpon>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransferBetweenAccounts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransferBetweenAccounts.Designer.cs">
+      <DependentUpon>TransferBetweenAccounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageCustomers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManageCustomers.Designer.cs">
+      <DependentUpon>ManageCustomers.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomException.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="AccountsOperations.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AccountsOperations.Designer.cs">
+      <DependentUpon>AccountsOperations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddCustomerAccounts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCustomerAccounts.Designer.cs">
+      <DependentUpon>AddCustomerAccounts.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CustomerForm.resx">
-      <DependentUpon>CustomerForm.cs</DependentUpon>
+    <Compile Include="UtilsController.cs" />
+    <EmbeddedResource Include="AddCustomerAccounts.resx">
+      <DependentUpon>AddCustomerAccounts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageCustomers.resx">
+      <DependentUpon>ManageCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsOperations.resx">
+      <DependentUpon>AccountsOperations.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -80,7 +105,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TransferBetweenAccounts.resx">
+      <DependentUpon>TransferBetweenAccounts.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -94,6 +123,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Designer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

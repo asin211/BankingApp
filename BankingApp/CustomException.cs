@@ -9,12 +9,6 @@ namespace BankingApp
     public class CustomException : Exception
     {
         public CustomException(string message): base(message) { } // Custom Exception for throwing any specific error
-
-     /*
-        //Another few  Exceptions
-        throw new ArgumentException("Can't withdrawl in negative amount!");
-        throw new FormatException("Input is null or empty!");
-    */
     }
 
     // Null or Empty input
@@ -24,7 +18,6 @@ namespace BankingApp
 
         public InvalidInputNullException(string message) : base(message) { }
     }
-
 
     // Input 0 or less
     public class NegativeInputException : Exception

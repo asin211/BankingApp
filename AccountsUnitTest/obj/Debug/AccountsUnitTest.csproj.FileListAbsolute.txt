@@ -28,6 +28,9 @@ C:\Users\amrinder\Source\Repos\BankingApp\AccountsUnitTest\obj\Debug\AccountsUni
 C:\Users\amrinder\Source\Repos\BankingApp\AccountsUnitTest\obj\Debug\AccountsUnitTest.csproj.CopyComplete
 C:\Users\amrinder\Source\Repos\BankingApp\AccountsUnitTest\obj\Debug\AccountsUnitTest.dll
 C:\Users\amrinder\Source\Repos\BankingApp\AccountsUnitTest\obj\Debug\AccountsUnitTest.pdb
+C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
 C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\AccountsUnitTest.dll
 C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\AccountsUnitTest.pdb
 C:\Users\amrinder\Downloads\BankingApp\AccountsUnitTest\bin\Debug\BankingApp.exe

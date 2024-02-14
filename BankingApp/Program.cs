@@ -16,9 +16,7 @@ namespace BankingApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            Application.Run(new CustomerForm());
-
+            Application.Run(new LoginForm());
         }
     }
 }

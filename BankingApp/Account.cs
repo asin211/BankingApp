@@ -1,7 +1,15 @@
-﻿namespace BankingApp
+﻿using System;
+using System.Linq;
+
+namespace BankingApp
 {
+    [Serializable]
     public abstract class Account
     {
+        private static int count = 1001; //Static Id for autoincrement
+
+        Controller controller = new Controller();
+
         public Customer AssociatedCustomer { get; set; }
 
         public double GetFailedTransactionFee()
@@ -17,7 +25,6 @@
             }
         }
 
-        private static int count = 1001; //Static Id for autoincrement
         public int AccountId { get; private set; }
         public string Type { get; protected set; }
 
@@ -54,6 +61,11 @@
             Balance = balance;
             count++;
         }
+        public Account(int customAccountId, double balance)
+        {
+            AccountId = customAccountId;
+            Balance = balance;
+        }
 
         //Overiding ToString Method
         public override string ToString()
@@ -63,9 +75,15 @@
     }
 
     // Inheritance
+    [Serializable]
     public class EverydayAccount : Account
     {
         public EverydayAccount(double balance) : base(balance)
+        {
+            Type = "Everyday Account";
+        }
+
+        public EverydayAccount(int customAccountId, double balance) : base(customAccountId, balance)
         {
             Type = "Everyday Account";
         }
@@ -97,17 +115,22 @@
         // created method to avoid error from parent abstract method
         public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
 
-
         public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
 
         public override double CalculateInterest() => 0; // created method to avoid error from parent abstract method
     }
+
+    [Serializable]
     public class InvestmentAccount : Account
     {
-
         public double InterestRate = 0.04;
 
         public InvestmentAccount(double balance) : base(balance)
+        {
+            Type = "Investment Account";
+        }
+
+        public InvestmentAccount(int customAccountId, double balance) : base(customAccountId, balance)
         {
             Type = "Investment Account";
         }
@@ -142,18 +165,22 @@
 
         public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
 
-
-
         // Account Info
         public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
     }
 
+    [Serializable]
     public class OmniAccount : Account
     {
         public double InterestRate = 0.04;
         public double OverDraftLimit = 100;
 
         public OmniAccount(double balance) : base(balance)
+        {
+            Type = "Omni Account";
+        }
+
+        public OmniAccount(int customAccountId, double balance) : base(customAccountId, balance)
         {
             Type = "Omni Account";
         }
@@ -187,7 +214,6 @@
         }
 
         public override void ChargeFailedTransactionFee() => Balance -= CalculateFailedTransactionFee();
-
 
         public override string AccountInfo() => $"Account Id: {AccountId}, Type: {Type}, Balance: {Balance}";
     }

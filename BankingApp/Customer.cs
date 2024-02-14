@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace BankingApp
 {
+    [Serializable]
     public class Customer
     {
+        Controller controller = new Controller();
+
         private static int customer_id = 101; // Static Id for customer id
 
         private int customerId;
         private string name;
-        private int phone;
+        private long phone;
         private bool staff;
 
         public int CustomerId 
@@ -27,7 +30,7 @@ namespace BankingApp
             set { name = value; }
         }
 
-        public int Phone 
+        public long Phone 
         {
             get { return phone; }
             set { phone = value; }
@@ -40,12 +43,14 @@ namespace BankingApp
         }
 
         // List to store customer's accounts
-        public List <Account> Accounts { get; private set; } // List to store different Accounts
+        public List <Account> Accounts { get; set; } // List to store different Accounts
 
         // Constructor
-        public Customer (string name, int phone, bool staff = true ) 
+        public Customer (string name, long phone, bool staff = true ) 
         {
-            CustomerId = customer_id++;
+            Customer lastCustomer = controller.CustomersList.LastOrDefault();
+
+            CustomerId = lastCustomer != null ? lastCustomer.CustomerId + 1 : customer_id++;  // Auto increment id from serialization data
             Name = name;
             Phone = phone;
             Staff = staff;
@@ -54,8 +59,6 @@ namespace BankingApp
             Accounts = new List<Account>();
         }
 
-        //Add Method for adding an account (Code provided to move in controller class (JUST IGNORE THIS METHOD), also can directly use .add and remove this method)
-        // Only asked for creating 3 methods for controller class for customer for 2nd assignment: add, update, delete. (28 Nov 23 recording - 40:40 min)
         public void AddAccount(Account account)
         {
             Accounts.Add(account);
